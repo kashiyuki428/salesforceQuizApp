@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-500 text-white hover:bg-primary-600;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary-500 text-white hover:bg-secondary-600;
+  }
+  
+  .btn-outline {
+    @apply border border-gray-300 hover:bg-gray-100;
+  }
+  
+  .quiz-option {
+    @apply p-4 border border-gray-300 rounded-md cursor-pointer transition-colors hover:bg-gray-50;
+  }
+  
+  .quiz-option-selected {
+    @apply border-primary-500 bg-primary-50;
+  }
+  
+  .quiz-option-correct {
+    @apply border-green-500 bg-green-50;
+  }
+  
+  .quiz-option-incorrect {
+    @apply border-red-500 bg-red-50;
+  }
+}
