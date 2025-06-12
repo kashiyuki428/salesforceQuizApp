@@ -73,6 +73,7 @@ interface QuizContextType {
   fetchQuizData: (databaseId: string) => Promise<void>;
   submitAnswer: (questionId: string, selectedOption: string) => void;
   moveToNextQuestion: () => void;
+  moveToPreviousQuestion: () => void;
   resetQuiz: () => void;
 }
 
@@ -169,6 +170,14 @@ export const QuizProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
+  // 前の問題に戻る関数
+  const moveToPreviousQuestion = () => {
+    if (state.currentQuestionIndex > 0) {
+      dispatch({ type: 'SET_CURRENT_QUESTION_INDEX', payload: state.currentQuestionIndex - 1 });
+      dispatch({ type: 'TOGGLE_EXPLANATION', payload: false });
+    }
+  };
+
   // クイズをリセットする関数
   const resetQuiz = () => {
     dispatch({ type: 'RESET_QUIZ' });
@@ -182,6 +191,7 @@ export const QuizProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         fetchQuizData,
         submitAnswer,
         moveToNextQuestion,
+        moveToPreviousQuestion,
         resetQuiz,
       }}
     >

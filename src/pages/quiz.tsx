@@ -10,7 +10,7 @@ import { QuizQuestion, UserAnswer } from '@/types';
 
 const QuizPage: React.FC = () => {
   const router = useRouter();
-  const { state, dispatch, fetchQuizData, submitAnswer, moveToNextQuestion, resetQuiz } = useQuiz();
+  const { state, dispatch, fetchQuizData, submitAnswer, moveToNextQuestion, moveToPreviousQuestion, resetQuiz } = useQuiz();
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isScoreModalOpen, setIsScoreModalOpen] = useState(false);
@@ -66,9 +66,9 @@ const QuizPage: React.FC = () => {
 
   // 回答ボタンを押した時の処理
   const handleAnswer = () => {
-    if (selectedOptions.length > 0 && currentQuestion) {
-      // 複数選択の場合はソートしてカンマ区切りにする
-      const answer = selectedOptions.sort().join(',');
+    if (currentQuestion) {
+      // 選択肢が選択されていない場合は空文字列を渡す
+      const answer = selectedOptions.length > 0 ? selectedOptions.sort().join(',') : '';
       submitAnswer(currentQuestion.id, answer);
     }
   };
@@ -76,6 +76,11 @@ const QuizPage: React.FC = () => {
   // 次へボタンを押した時の処理
   const handleNext = () => {
     moveToNextQuestion();
+  };
+
+  // 戻るボタンを押した時の処理
+  const handlePrevious = () => {
+    moveToPreviousQuestion();
   };
 
   // 採点ボタンを押した時の処理
@@ -211,11 +216,13 @@ const QuizPage: React.FC = () => {
           buttonType={getButtonType()}
           onAnswer={handleAnswer}
           onNext={handleNext}
+          onPrevious={handlePrevious}
           onScore={handleScore}
           onHome={handleHome}
           onMidwayScore={handleMidwayScore}
-          isAnswerButtonDisabled={selectedOptions.length === 0}
+          isAnswerButtonDisabled={false}
           showMidwayScoreButton={Object.keys(userAnswers).length > 0}
+          showPreviousButton={currentQuestionIndex > 0}
         />
       </div>
 

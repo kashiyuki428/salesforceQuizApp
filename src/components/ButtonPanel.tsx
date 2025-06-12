@@ -1,34 +1,52 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface ButtonPanelProps {
   buttonType: 'answer' | 'next' | 'score';
   onAnswer: () => void;
   onNext: () => void;
+  onPrevious: () => void; // 戻るボタン用のコールバック
   onScore: () => void;
   onHome: () => void;
   onMidwayScore?: () => void; // 途中採点ボタン用のコールバック
   isAnswerButtonDisabled: boolean;
   showMidwayScoreButton?: boolean; // 途中採点ボタンを表示するかどうか
+  showPreviousButton?: boolean; // 戻るボタンを表示するかどうか
 }
 
 const ButtonPanel: React.FC<ButtonPanelProps> = ({
   buttonType,
   onAnswer,
   onNext,
+  onPrevious,
   onScore,
   onHome,
   onMidwayScore,
   isAnswerButtonDisabled,
   showMidwayScoreButton = false,
+  showPreviousButton = false,
 }) => {
   return (
     <div className="flex justify-between mt-8">
-      <button
-        onClick={onHome}
-        className="btn btn-outline"
-      >
-        ホーム
-      </button>
+      <div className="flex space-x-2">
+        <button
+          onClick={onHome}
+          className="btn btn-outline"
+          aria-label="ホームに戻る"
+        >
+          <FontAwesomeIcon icon="home" />
+        </button>
+        
+        {showPreviousButton && (
+          <button
+            onClick={onPrevious}
+            className="btn btn-outline"
+            aria-label="前の問題に戻る"
+          >
+            <FontAwesomeIcon icon="angle-left" />
+          </button>
+        )}
+      </div>
       
       <div className="flex space-x-2">
         {showMidwayScoreButton && buttonType !== 'score' && (
@@ -43,8 +61,7 @@ const ButtonPanel: React.FC<ButtonPanelProps> = ({
         {buttonType === 'answer' && (
           <button
             onClick={onAnswer}
-            disabled={isAnswerButtonDisabled}
-            className={`btn btn-primary ${isAnswerButtonDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className="btn btn-primary"
           >
             回答
           </button>
@@ -54,8 +71,9 @@ const ButtonPanel: React.FC<ButtonPanelProps> = ({
           <button
             onClick={onNext}
             className="btn btn-primary"
+            aria-label="次の問題へ"
           >
-            次へ
+            <FontAwesomeIcon icon="angle-right" />
           </button>
         )}
         
