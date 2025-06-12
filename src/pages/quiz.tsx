@@ -66,9 +66,9 @@ const QuizPage: React.FC = () => {
 
   // 回答ボタンを押した時の処理
   const handleAnswer = () => {
-    if (selectedOptions.length > 0 && currentQuestion) {
-      // 複数選択の場合はソートしてカンマ区切りにする
-      const answer = selectedOptions.sort().join(',');
+    if (currentQuestion) {
+      // 選択肢が選択されていない場合は空文字列を渡す
+      const answer = selectedOptions.length > 0 ? selectedOptions.sort().join(',') : '';
       submitAnswer(currentQuestion.id, answer);
     }
   };
